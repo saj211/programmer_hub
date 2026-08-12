@@ -1,0 +1,128 @@
+{% extends "core/base.html" %}
+
+{% block title %}400 | درخواست نامعتبر{% endblock %}
+
+{% block content %}
+
+<div class="error-page">
+
+    <div class="error-card">
+
+        <div class="error-code error-400">
+            400
+        </div>
+
+        <h1>درخواست نامعتبر</h1>
+
+        <p>
+            درخواست ارسال‌شده معتبر نیست یا اطلاعات آن ناقص است.
+            لطفاً دوباره تلاش کنید.
+        </p>
+
+        <div class="error-actions">
+
+            <a href="{% url 'home' %}" class="error-btn">
+                <i class="fas fa-home"></i>
+                صفحه اصلی
+            </a>
+
+            <a href="javascript:history.back()" class="error-btn secondary">
+                <i class="fas fa-arrow-right"></i>
+                بازگشت
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+.error-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.error-card {
+    width: 100%;
+    max-width: 650px;
+    padding: 50px 30px;
+    text-align: center;
+
+    background: rgba(0,0,0,.75);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 15px;
+
+    color: white;
+}
+
+.error-code {
+    font-size: 100px;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 25px;
+}
+
+.error-400 {
+    color: #64748b;
+}
+
+.error-card h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.error-card p {
+    color: #aaa;
+    line-height: 2;
+}
+
+.error-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.error-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 20px;
+    border-radius: 10px;
+
+    background: #4ac24ab4;
+    color: white;
+
+    text-decoration: none;
+    font-weight: bold;
+
+    transition: .25s;
+}
+
+.error-btn:hover {
+    transform: scale(1.05);
+}
+
+.error-btn.secondary {
+    background: #444;
+}
+
+@media (max-width:600px) {
+
+    .error-code {
+        font-size: 75px;
+    }
+
+    .error-card {
+        padding: 40px 20px;
+    }
+}
+</style>
+
+{% endblock %}

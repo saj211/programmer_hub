@@ -1,0 +1,605 @@
+
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    
+            <form method="GET" class="search-row">
+                <div class="search-child">
+   <select name="city">
+    <option value="">همه شهرها</option>
+    <option value="TEHRAN">تهران</option>
+    <option value="QOM">قم</option>
+    <option value="SHIRAZ">شیراز</option>
+    <option value="ISFAHAN">اصفهان</option>
+    <option value="MASHHAD">مشهد</option>
+    <option value="SEMNAN">سمنان</option>
+</select>
+
+   <select name="skill">
+    <option value=""> مهارت‌ من/مورد نیاز</option>
+    <option value="frontend">فرانت‌اند</option>
+    <option value="backend">بک‌اند</option>
+    <option value="fullstack">فول‌استک</option>
+    <option value="mobile-development">توسعه موبایل</option>
+    <option value="data-science">علم داده</option>
+    <option value="artificial-intelligence">هوش مصنوعی</option>
+    <option value="cybersecurity">امنیت سایبری</option>
+    <option value="devops">DevOps</option>
+    <option value="cloud-computing">رایانش ابری</option>
+    <option value="ui-ux-design">طراحی UI/UX</option>
+    <option value="game-development">توسعه بازی</option>
+    <option value="open-source">متن‌باز</option>
+</select>
+
+<select name="purpose">
+    <option value="">همه اهداف</option>
+    <option value="collaboration">همکاری در پروژه</option>
+    <option value="looking_for_team">دنبال تیم</option>
+    <option value="looking_for_member">دنبال هم‌تیمی</option>
+    <option value="learning_partner">پارتنر یادگیری</option>
+    <option value="startup">همکاری استارتاپی</option>
+    <option value="job_opportunity">فرصت شغلی</option>
+</select>
+
+<div class="btn">
+                <button type="submit">
+                    جستجو
+                </button>
+</div>
+</div>
+
+</form>
+    <div class="posts-grid">
+{% for post in page_obj %}
+
+ <div class="post-list">
+                
+
+            <div class="post-body">
+                
+                  <div class="post-title">
+                    <div class="">
+                <h1 style="font-weight: bold;"> {{ post.title }} </h1>
+            </div>
+                <div class="" 
+                style=" border:2px solid rgba(255, 72, 255, 0.755); ;border-radius: 8px; padding: 5px 10px; background: #33073c61; color: rgb(255, 72, 255);">
+                       {{ post.get_purpose_display }}
+                </div>
+                </div>
+
+             <div class="box" style="margin-bottom: 20px;">
+               <p>{{ post.description|truncatewords:30 }}</p>
+          </div>
+
+                
+                
+                       <div  class="box">
+                    <i class="fa-solid fa-location-dot"></i>
+                     {{ post.get_city_display }}
+               
+</div>
+                
+                <div  class="box">
+                    <i class="fa-solid fa-laptop-code"></i>
+
+                     مهارت من:
+                  <div class="box-items" 
+                    style="display:block; border:2px solid gray; ;border-radius: 8px; padding: 5px 10px; background: rgba(128, 128, 128, 0.555); color: white;">
+                      {{ post.get_my_skills_display }}
+                </div>
+ </div>
+                <div  class="box" style="margin-bottom: 20px;">
+                    <i class="fa-solid fa-eye"></i>
+                     مهارت مورد نیاز:
+                      <div class="box-items"
+                    style="display:block; border:2px solid gray; ;border-radius: 8px; padding: 5px 10px; background: rgba(128, 128, 128, 0.555); color: white;">
+
+                    {{ post.get_skills_needed_display }}
+                </div>
+            </div>
+
+            </div>
+
+{% if request.user == post.author %}
+
+<div class="btns flex gap-3 mt-4">
+
+    <a href="{% url 'edit_post' post.id %}"
+       class="btn-edit">
+         ویرایش
+    </a>
+
+    <form method="POST"
+          action="{% url 'delete_post' post.id %}">
+        {% csrf_token %}
+        <button
+            type="submit"
+            class="btn-delete">
+             حذف
+        </button>
+
+      
+    </form>
+ 
+</div>
+
+
+{% endif %}
+
+</div>
+
+{% empty %}
+<div class="text-center w-full">
+<h2 style="font-size: 20px;">نتیجه ای یافت نشد.</h2>
+
+ <a href="{% url 'post_list' %}" >
+
+<div class="btn" style="margin-top: 3rem; ">
+    نمایش همه پست‌ها
+</div>
+
+</a>
+</div>
+
+
+{% endfor %}
+
+
+</div>
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">قبل</a>
+    {% endif %}
+
+    <span>
+        صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">بعد</a>
+    {% endif %}
+</div>
+<style>
+
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    gap: 15px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+
+
+
+.search-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.search-child{
+    margin: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+
+    width: 60%;
+
+    color: rgb(0, 0, 0);
+    background: #c8bfbfc0;
+
+    padding: 10px 40px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    border-radius: 20px;
+    cursor: pointer;
+
+    box-sizing: border-box;
+}
+
+.search-child select{
+    transition: transform 0.2s ease-in-out;
+    min-width: 0;
+}
+
+.search-child select:hover{
+    transform: scale(1.07);
+}
+
+
+
+.btn{
+    display: inline-block;
+    text-align: center;
+
+    color: rgb(255, 255, 255);
+    background: #4ac24ab4;
+
+    padding: 18px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    border-radius: 20px;
+    cursor: pointer;
+
+    transition: transform 0.2s ease-in-out;
+
+    box-sizing: border-box;
+}
+
+.btn:hover{
+    transform: scale(1.05);
+}
+
+.btn button{
+    color: white;
+    background: transparent;
+    border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+}
+
+
+
+
+.btns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    gap: 12px;
+}
+
+.btn-edit{
+    display: inline-block;
+    text-align: center;
+
+    color: rgb(255, 255, 255);
+    background: #4ac24ab4;
+
+    padding: 10px 15px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: transform 0.2s ease-in-out;
+
+    box-sizing: border-box;
+}
+
+.btn-edit:hover{
+    transform: scale(1.07);
+}
+
+.btn-delete{
+    display: inline-block;
+    text-align: center;
+
+    color: rgb(255, 255, 255);
+    background: #c24a4ab4;
+
+    padding: 10px 15px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: transform 0.2s ease-in-out;
+
+    box-sizing: border-box;
+}
+
+.btn-delete:hover{
+    transform: scale(1.07);
+}
+
+
+
+.posts-grid{
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+    padding: 20px;
+
+    color: white;
+
+    min-width: 0;
+}
+
+.post-body{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.post-list{
+    padding: 25px;
+
+    background: rgba(4, 4, 4, 0.659);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 350px;
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+
+
+.post-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 2px solid gray;
+
+    margin: 10px auto;
+    padding-bottom: 15px;
+
+    width: 100%;
+
+    gap: 10px;
+    min-width: 0;
+}
+
+.post-title h1{
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+
+
+.box{
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    flex-wrap: wrap;
+}
+
+.box i{
+    margin-left: 5px;
+    flex-shrink: 0;
+}
+
+.box-items{
+    background: #1b1919b4;
+
+    border: 2px solid gray;
+    border-radius: 8px;
+
+    color: white;
+
+    padding: 10px 15px;
+
+    margin-right: 10px;
+
+    justify-content: center;
+
+    min-width: 0;
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+    box-sizing: border-box;
+}
+
+
+/* tablet */
+
+@media (max-width: 1024px){
+
+    .posts-grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .search-child{
+        width: 80%;
+
+gap: 30px;
+        padding: 10px 25px;
+    }
+
+    .post-list{
+        padding: 20px;
+    }
+
+}
+
+
+/* mobile */
+
+@media (max-width: 768px){
+
+    .search-row{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-child{
+        width: 95%;
+
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 12px;
+
+        padding: 15px;
+
+        margin: 15px auto;
+    }
+
+    .search-child select{
+        width: 100%;
+        padding: 10px;
+
+        box-sizing: border-box;
+    }
+
+    .search-child .btn{
+        width: 100%;
+        text-align: center;
+    }
+
+    .search-child .btn button{
+        width: 100%;
+    }
+
+
+
+    .posts-grid{
+        grid-template-columns: 1fr;
+
+        padding: 10px;
+
+        gap: 15px;
+    }
+
+    .post-list{
+        min-height: auto;
+        padding: 18px;
+    }
+
+
+
+    .post-title{
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .post-title h1{
+        font-size: 20px;
+    }
+
+
+
+    .box{
+        font-size: 0.95rem;
+        align-items: flex-start;
+           display: flex;
+    align-items: center;
+    }
+
+    .box-items{
+        margin-right: 5px;
+        margin-top: 5px;
+
+        padding: 8px 10px;
+    }
+
+
+
+    .btns{
+        flex-direction: column;
+        gap: 10px;
+
+        width: 100%;
+    }
+
+    .btn-edit{
+        width: 100%;
+        text-align: center;
+    }
+
+    .btns form{
+        width: 100%;
+    }
+
+    .btn-delete{
+        width: 100%;
+    }
+
+
+
+    .pagination{
+        margin-top: 50px;
+        padding: 0 15px;
+        font-size: 14px;
+    }
+
+}
+
+
+/* small phones */
+
+@media (max-width: 480px){
+
+    .search-child{
+        width: 100%;
+        padding: 12px;
+
+        border-radius: 15px;
+    }
+
+    .posts-grid{
+        padding: 5px;
+    }
+
+    .post-list{
+        padding: 15px;
+    }
+
+    .post-title h1{
+        font-size: 18px;
+    }
+
+    .post-title > div:last-child{
+        font-size: 12px;
+        padding: 4px 7px !important;
+    }
+
+    .box{
+        font-size: 13px;
+           display: flex;
+    align-items: center;
+    }
+
+    .box-items{
+        font-size: 12px;
+        padding: 7px 9px;
+    }
+
+    .btn-edit,
+    .btn-delete{
+        font-size: 15px;
+        padding: 9px 12px;
+    }
+
+    .pagination{
+        margin-top: 40px;
+        font-size: 13px;
+    }
+
+}
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,603 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Programmer Hub{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    {% block extra_css %}{% endblock %}
+   <script type="module" src="https://unpkg.com/@dotlottie/player-component/dist/dotlottie-player.mjs"></script>
+
+
+</head>
+<body class="bg-black text-gray-400 min-h-screen">
+
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline
+           class="fixed inset-0 w-full h-full object-cover -z-20">
+        <source src="{% static 'images/pixel2.mp4' %}" type="video/mp4">
+    </video>
+
+    <div class="fixed inset-0 bg-black/50 -z-10"></div>
+
+
+        
+
+            {% if user.is_authenticated %}
+   <nav class="backdrop-blur-sm text-white">
+    <div class="nav-bar max-w-7xl mx-auto px-4 py-3">
+
+
+        <!-- LOGO -->
+        
+<div class="logo">
+  
+       <a href="{% url 'home' %}" >
+            <img src="{% static 'images/log2.png' %}" style="width:100px;">
+</a>
+        </div>
+      
+
+        <!-- HAMBURGER BUTTON (mobile only) -->
+        <button class="burger" onclick="toggleMenu(event)">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- MENU -->
+       
+             <div id="navMenu">   
+                
+                <div class="nav-child">
+                <a href="{% url 'home' %}" class="navBtn">خانه</a>
+                <a href="{% url 'profile' user.username %}" class="navBtn">پروفایل</a>
+                <a href="{% url 'chat_list' %}" class="navBtn">گفت و گو</a>
+                <a href="{% url 'post_list'%}" class="navBtn">پست های من</a>
+               </div>
+               </div>
+            
+                
+          
+
+        
+
+
+          <!-- LEFT: brand -->
+        <div class="brand">
+        
+              {% if user.is_authenticated %}
+               
+                    <div class="create-btn">
+                <a href="{% url 'create_post' %}" class="">
+                    <i class="fas fa-plus"></i>
+                    ایجاد پست جدید</a>
+                </div>
+
+                
+               
+                     <div  class="red-btn">
+                <a href="{% url 'logout' %}" ><i class="fa fa-sign-out" ></i></a>   
+                </div>
+                
+                
+            {% endif %}
+        </div>
+
+
+    </div>
+</nav>
+{% else %}
+<div class="logo-alone">
+       
+<a href="{% url 'home' %}" >
+            <img src="{% static 'images/log2.png' %}" style="width:100px;">
+</a>
+        </div>
+  {% endif %}
+
+    <!-- Messages -->
+{% if messages %}
+    <div class="toast-container">
+        {% for message in messages %}
+            <div class="toast {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+    <!-- Main Content -->
+<main class="main w-full relative z-10 ">
+                {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="about border-t p-4 bg-black/70">
+        <!-- Description -->
+        <div class="description text-sm md:text-right">
+        تمامی حقوق برای Programmer Hub محفوظ است - ۱۴۰۵ ©
+    </div>
+        
+        <!-- links -->
+        <div class="contact text-gray-300 text-sm md:text-left">
+
+
+<!-- tel link -->
+            <a href="https://t.me/ProgrammersCommnuity" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="hover:text-blue-400 transition-colors duration-300 inline-flex items-center gap-2">
+                
+                <span>ProgrammersCommnuity@</span>
+                <i class="fas fa-paper-plane"></i>
+
+            </a>
+<!-- github link -->
+             <a href="https://github.com/saj211" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                <span>GitHub</span>
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        
+    </footer>
+
+
+    {% block extra_js %}
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menu = document.querySelector(".nav-child");
+    const burger = document.querySelector(".burger");
+
+    function toggleMenu(event){
+        event.stopPropagation();
+        menu.classList.toggle("active");
+    }
+
+    // expose function to HTML onclick
+    window.toggleMenu = toggleMenu;
+
+    // close on outside click
+    document.addEventListener("click", function (event) {
+        if (!menu.contains(event.target) && !burger.contains(event.target)) {
+            menu.classList.remove("active");
+        }
+    });
+
+    // close when clicking a nav link
+    menu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            menu.classList.remove("active");
+        });
+    });
+
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toasts = document.querySelectorAll(".toast");
+
+    toasts.forEach((toast) => {
+        setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateY(-20px)";
+
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 5000);
+    });
+});
+</script>
+    {% endblock %}
+
+  
+</body>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.logo-alone{
+    display: flex;
+    padding: 30px;
+}
+
+.brand, .logo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.btn{
+    border-radius: 8px;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    background: #39b607c0;
+    text-decoration: none;
+    transition: all .3s ease;
+    margin-right: auto;
+    align-items: center;
+}
+
+.create-btn{
+    border: 2px solid green;
+    border-radius: 8px;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: all .3s ease;
+    margin-right: auto;
+    align-items: center;
+}
+
+.red-btn{
+    color: rgba(230, 8, 8, 0.749);
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: all .3s ease;
+    margin-right: auto;
+    align-items: center;
+    border: 1px solid red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.btn:hover, .create-btn:hover, .navBtn:hover{
+    color: white;
+    transform: scale(1.05);
+}
+
+.red-btn:hover{
+    color: rgb(245, 3, 3);
+    transform: scale(1.05);
+}
+
+.main {
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+}
+
+nav{
+    width: 100%;
+    background: #0000009c;
+    position: relative;
+    z-index:1000;
+}
+
+.nav-bar{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+/* menu */
+.nav-child{
+    display: flex;
+    gap: 42px;
+    align-items: center;
+}
+
+
+.burger{
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    max-width: calc(100vw - 40px);
+}
+
+.toast {
+    min-width: 280px;
+    max-width: 400px;
+    margin-top: 80px;
+    padding: 15px 20px;
+    border-radius: 10px;
+
+    color: white;
+    font-weight: 500;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    animation: slideIn 0.4s ease;
+}
+
+.toast.success {
+    background: #22c55ebe;
+}
+
+.toast.info {
+    background: #0345aeaa;
+}
+
+.toast.warning {
+    background: #c58009cd;
+}
+
+.toast.error {
+    background: #ef4444c2;
+}
+
+
+
+.contact{
+    text-align: left;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.about{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 30%;
+    padding: 30px 40px;
+}
+
+.description{
+    display: flex;
+    align-items: center;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* tablet */
+
+@media (max-width: 1024px){
+
+    .nav-child{
+        gap: 20px;
+    }
+
+    .nav-bar img{
+        width: 80px !important;
+    }
+
+    .create-btn{
+        padding: 8px 14px;
+    }
+
+    .red-btn{
+        padding: 8px 12px;
+    }
+
+}
+
+
+/* mobile */
+
+@media (max-width: 768px){
+
+    .nav-bar{
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .burger{
+        display: block;
+        flex-shrink: 0;
+    }
+
+   
+    .nav-child{
+        position: absolute;
+        top: 70px;
+        right: 0;
+        left: 0;
+        z-index: 1000;
+
+        opacity: 0;
+        transform: translateY(-15px);
+        visibility: hidden;
+        pointer-events: none;
+
+        transition: all 0.25s ease-in-out;
+
+         width: 100%;
+        flex-direction: column;
+        gap: 15px;
+
+        background: black;
+        border-bottom: 1px solid rgba(255,255,255,.2);
+        border-radius: 20px;
+
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+   
+    .nav-child.active{
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+
+
+    .logo{
+        display: none;
+    }
+
+    .navBtn{
+        display: block;
+        box-sizing: border-box;
+
+        padding: 8px 12px;
+        border: 1px solid rgba(255,255,255,.2);
+
+        width: 100%;
+        border-radius: 8px;
+
+        background: rgba(255,255,255,.05);
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .brand{
+        gap: 8px;
+    }
+
+    .create-btn{
+        padding: 8px 10px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .red-btn{
+        padding: 8px 10px;
+        flex-shrink: 0;
+    }
+
+    .nav-bar img{
+        width: 70px !important;
+    }
+
+    .main{
+        
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Footer becomes one column */
+    .about{
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 25px 20px;
+        gap: 20px;
+    }
+
+    .description{
+        justify-content: center;
+        text-align: center;
+    }
+
+    .contact{
+        text-align: center;
+        align-items: center;
+    }
+
+    footer{
+        font-size: .9rem;
+    }
+
+
+    .toast-container{
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .toast{
+        min-width: 0;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+        margin-top: 60px;
+        padding: 12px 15px;
+    }
+
+}
+
+/* =====================
+   Small phones
+   ===================== */
+
+@media (max-width: 480px){
+
+    .nav-bar{
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .create-btn{
+        padding: 7px 8px;
+        font-size: 11px;
+    }
+
+    .red-btn{
+        padding: 7px 9px;
+    }
+
+    .burger{
+        font-size: 21px;
+    }
+
+    .nav-child{
+        padding: 15px;
+    }
+
+    .navBtn{
+        padding: 9px 10px;
+        font-size: 14px;
+    }
+
+    .about{
+        padding: 20px 15px;
+    }
+
+    .description{
+        font-size: 12px;
+    }
+
+    .contact{
+        font-size: 12px;
+        word-break: break-word;
+    }
+}
+</style>
+</html>

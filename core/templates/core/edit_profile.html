@@ -1,0 +1,563 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+<div class="container-child">
+        
+
+        <form method="POST" enctype="multipart/form-data" class="the-form">
+            {% csrf_token %}
+            <div class="container-header">
+<div class="edit-title">
+            <h1 class="text-3xl font-bold">ویرایش پروفایل</h1>
+          
+        </div>
+            <!-- avatar -->
+             <div class="heading">
+
+    <div class="avatar-upload">
+        {{ form.avatar }}
+    </div>
+
+    <div class="profile-avatar">
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="Avatar">
+        {% else %}
+            <i class="fas fa-user-circle fa-4x"></i>
+        {% endif %}
+    </div>
+
+</div>
+            <!-- Bio -->
+           <div class="fields">
+    <label class="">
+        درباره من
+    </label>
+
+    {{ form.bio }}
+</div>
+
+            <!-- Github -->
+         <div class="fields">
+    <label class="">
+        Github
+    </label>
+
+    {{ form.github_URL }}
+</div>
+
+            <!-- Linkedin -->
+            <div class="fields">
+    <label class="">
+        LinkedIn
+    </label>
+
+    {{ form.linkedin_URL }}
+</div>
+
+            <!-- Skills -->
+            <div class="fields">
+                <label class="block font-medium">
+                    مهارت‌ها
+                </label>
+
+               <div class="skill">
+
+    {% for skill in skills %}
+        <label class="skill-child">
+<div>
+            <input type="checkbox"
+                   name="skills"
+                   value="{{ skill.id }}"
+                   {% if skill.id in selected_skills %}
+                        checked
+                   {% endif %}>
+</div>
+<div>
+            <span>{{ skill.name }}</span>
+</div>
+        </label>
+    {% endfor %}
+
+</div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="btns">
+
+                <button
+                    type="submit"
+                    class="btn-edit"
+                >
+                    ذخیره تغییرات
+                </button>
+
+                <a href="{% url 'profile' user.username %}"
+                   class="btn-quit">
+                    انصراف
+                </a>
+
+            </div>
+
+        </form>
+
+</div>
+</div>
+
+<style>
+
+.container {
+    width: 100%;
+    margin: 30px auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    box-sizing: border-box;
+}
+
+.container-child {
+    width: min(900px, 90%);
+    margin: 0 auto;
+}
+
+.the-form {
+    width: 100%;
+}
+
+
+.container-header {
+    width: 100%;
+
+    margin: 30px auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: #ffffff;
+
+    gap: 30px;
+}
+
+.edit-title {
+    flex-shrink: 0;
+}
+
+.edit-title h1 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+.heading {
+    display: flex;
+
+    align-items: center;
+
+    margin-right: auto;
+
+    justify-content: flex-end;
+
+    gap: 20px;
+}
+
+.avatar-upload {
+    max-width: 200px;
+    overflow: hidden;
+}
+
+.avatar-upload input[type="file"] {
+    color: white;
+    max-width: 100%;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    border: 2px solid #ffffff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.profile-avatar i {
+    color: #cdd6d0;
+}
+
+
+.fields {
+    width: 100%;
+
+    border-bottom: 2px solid rgba(255,255,255,.15);
+
+    padding-bottom: 15px;
+
+    margin-bottom: 20px;
+}
+
+
+
+.fields > label {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    background: #ebe3e39c;
+
+    color: black;
+
+    padding: 8px 12px;
+
+    font-size: 18px;
+
+    border-radius: 8px;
+
+    margin-top: 10px;
+}
+
+
+
+.fields input:not([type="checkbox"]),
+.fields textarea {
+    display: block;
+
+    margin: 20px auto;
+
+    padding: 12px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border-radius: 8px;
+
+    border: 2px solid white;
+
+    background: rgba(0,0,0,.4);
+
+    color: white;
+
+    outline: none;
+}
+
+.fields textarea {
+    min-height: 130px;
+
+    resize: vertical;
+}
+
+.fields input:not([type="checkbox"]):focus,
+.fields textarea:focus {
+    border-color: #b653d9;
+
+    outline: none;
+}
+
+
+
+.skill {
+    display: grid;
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+
+
+.skill-child {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding: 10px 12px;
+
+    background: rgba(235, 227, 227, 0.6);
+
+    color: black;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+
+    box-sizing: border-box;
+}
+
+.skill-child:hover {
+    background: rgba(255,255,255,.8);
+
+    transform: translateY(-2px);
+}
+
+
+
+.skill-child input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+
+    margin: 0;
+
+    padding: 0;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+}
+
+
+
+.skill-child span {
+    font-size: 14px;
+
+    text-align: center;
+
+    overflow-wrap: anywhere;
+}
+
+
+
+.btns {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+
+
+.btn-edit,
+.btn-quit {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    padding: 16px 22px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    transition: transform .2s ease-in-out;
+
+    border: none;
+
+    box-sizing: border-box;
+}
+
+.btn-edit {
+    background: #4ac24ab4;
+}
+
+.btn-quit {
+    background: #c24a4ab4;
+}
+
+.btn-edit:hover,
+.btn-quit:hover {
+    transform: scale(1.05);
+}
+
+/* tablet */
+
+@media (max-width: 1024px) {
+
+    .container-child {
+        width: 90%;
+    }
+
+    .skill {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+/* mobile */
+
+@media (max-width: 768px) {
+
+    .container {
+        margin: 20px auto;
+
+        padding: 0 10px;
+
+        box-sizing: border-box;
+    }
+
+    .container-child {
+        width: 100%;
+    }
+
+
+
+    .container-header {
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 20px;
+
+        margin: 20px auto;
+    }
+
+    .edit-title {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .edit-title h1 {
+        font-size: 24px;
+    }
+
+    .heading {
+        margin: 0;
+
+        justify-content: center;
+    }
+
+
+
+    .profile-avatar {
+        width: 90px;
+        height: 90px;
+    }
+
+
+    .skill {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .skill-child {
+        padding: 9px;
+    }
+
+    .skill-child span {
+        font-size: 13px;
+    }
+
+
+
+    .btns {
+        flex-direction: column;
+
+        width: 100%;
+
+        gap: 12px;
+    }
+
+    .btn-edit,
+    .btn-quit {
+        width: 100%;
+
+        padding: 14px;
+    }
+
+}
+
+
+
+@media (max-width: 480px) {
+
+    .container {
+        padding: 0 5px;
+    }
+
+    .edit-title h1 {
+        font-size: 21px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .fields > label {
+        font-size: 15px;
+
+        padding: 7px 10px;
+    }
+
+    .fields input:not([type="checkbox"]),
+    .fields textarea {
+        font-size: 14px;
+
+        padding: 10px;
+    }
+
+
+
+    .skill {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+    .skill-child {
+        padding: 8px;
+
+        gap: 5px;
+    }
+
+    .skill-child span {
+        font-size: 12px;
+    }
+
+    .skill-child input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+    }
+
+}
+</style>
+
+{% endblock %}
+

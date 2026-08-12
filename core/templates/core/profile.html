@@ -1,0 +1,413 @@
+<!-- core/templates/core/profile.html -->
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="profile-container">
+    
+        <div class="terminal-body">
+            <div class="profile-header">
+                <div class="header-child">
+                <div class="profile-avatar">
+
+                    {% if profile_user.profile.avatar %}
+                        <img src="{{ profile_user.profile.avatar.url }}" alt="{{ profile_user.username }}">
+                    {% else %}
+                        <i class="fas fa-user-circle fa-4x"></i>
+                    {% endif %}
+
+       
+                </div>
+
+                <div class="profile-info">
+                    <h1>{{ user.username }}</h1>
+                    <p class="bio">{{ profile_user.profile.bio  | default:"هیچ بیوگرافی وارد نشده است"}} </p>
+<div class="skill">
+                     {% for skill in profile.skills.all %}
+                            <span class="skill-badge">
+                                {{ skill.name }}
+                            </span>
+                        {% empty %}
+                            <p>هنوز مهارتی انتخاب نشده</p>
+                        {% endfor %}
+                    
+</div>
+                    <div class="profile-links">
+                        {% if profile_user.profile.github_URL %}
+                            <a href="{{ user.profile.github_URL }}" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        {% endif %}
+                        {% if profile_user.profile.linkedin_URL %}
+                            <a href="{{ user.profile.linkedin_URL }}" target="_blank">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+</div>
+                     {% if user == profile_user %}
+                <div class="profile-actions">
+                    <a href="{% url 'edit_profile' profile_user %}" class="btn-primary">
+                        <i class="fas fa-edit"></i> ویرایش پروفایل
+                    </a>
+                </div>
+            {% endif %}
+            </div>
+            
+            <div class="profile-stats">
+                <div class="btn-posts">
+                <a class="stat" href="{% url 'post_list' %}">
+                    <p class="stat-value">{{ user.posts.count }}
+                    </p>
+                    <p class="stat-label"> پست</p>
+                </a>
+           </div>
+                <div class="stat">
+                    <span class="stat-label"> عضو از  </span>
+                     
+                    <span class="stat-value"> {{ profile.created_at }}</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+<style>
+.profile-container {
+    max-width: 80%;
+    margin: 50px auto;
+}
+
+.profile-header {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.header-child {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    width: 100%;
+    background: #329115bf;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #40f608a8;
+}
+
+.btn-posts {
+    background: #494c47bf;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-posts:hover {
+    background: #9fa69da8;
+}
+
+
+.profile-info{
+    color: #ffffff;
+    font-size: 20px;
+}
+.profile-info h1{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-avatar i {
+    color: #cdd6d0;
+}
+
+
+.bio {
+    color: #cfcfcf;
+    margin: 10px 0;
+}
+
+.profile-links a {
+    color: #a2b9a7;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.profile-links a:hover {
+    text-decoration: underline;
+    color: #b2cdb9;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 40px;
+    padding: 20px 0;
+    justify-content: space-between;
+    border-top: 2px solid #888;
+    margin-bottom: 20px;
+}
+
+
+.stat {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    
+}
+
+.skill{
+display: grid;
+grid-template-columns: repeat(4,1fr);
+gap: 12px;
+margin: 20px auto;
+}
+
+.skill-badge{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ebe3e39c;
+    color: black;
+    padding: 5px 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+
+.stat-value {
+    font-size: 1.1rem;
+    color: #ffffff;
+    display: block;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #d7d0d0;
+}
+
+.profile-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* tablet */
+
+@media (max-width: 1024px) {
+
+    .profile-container {
+        max-width: 90%;
+        margin: 40px auto;
+    }
+
+    .header-child {
+        gap: 20px;
+    }
+
+    .profile-info {
+        font-size: 18px;
+    }
+
+    .profile-info h1 {
+        font-size: 26px;
+    }
+
+    .skill {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .skill-badge {
+        font-size: 16px;
+    }
+
+}
+
+
+/* mobile */
+
+@media (max-width: 768px) {
+
+    .profile-container {
+        max-width: 95%;
+        margin: 25px auto;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .header-child {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .profile-avatar {
+        width: 90px;
+        height: 90px;
+    }
+
+    .profile-info {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .profile-info h1 {
+        font-size: 25px;
+    }
+
+    .bio {
+        line-height: 1.7;
+        word-break: break-word;
+    }
+
+    .skill {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: 100%;
+        margin: 15px auto;
+    }
+
+    .skill-badge {
+        font-size: 14px;
+        padding: 7px 5px;
+        margin-top: 5px;
+        word-break: break-word;
+    }
+
+    .profile-links {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .profile-links a {
+        margin-left: 0;
+    }
+
+    .profile-actions {
+        width: 100%;
+    }
+
+    .btn-primary {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .profile-stats {
+        gap: 15px;
+        padding: 15px 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-posts {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .stat {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .stat-value {
+        font-size: 1rem;
+    }
+
+    .stat-label {
+        font-size: .9rem;
+    }
+
+}
+
+
+/* small phone */
+
+@media (max-width: 480px) {
+
+    .profile-container {
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .profile-info h1 {
+        font-size: 22px;
+    }
+
+    .profile-info {
+        font-size: 15px;
+    }
+
+    .skill {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .skill-badge {
+        font-size: 13px;
+        padding: 6px 4px;
+    }
+
+    .profile-links {
+        font-size: 14px;
+    }
+
+    .profile-stats {
+        font-size: 14px;
+    }
+
+}
+
+
+
+</style>
+{% endblock %}

@@ -1,0 +1,287 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}ورود | پروگرامر هاب{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- right side: login form -->
+    <div class="right-side">
+        <div class="child">
+            
+            <h2><i class="fas fa-sign-in-alt"></i> ورود به حساب</h2>
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> نام کاربری:</label>
+                    <input type="text" name="username" placeholder="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> رمز عبور:</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    ورود
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>حساب کاربری نداری؟
+                    <a href="{% url 'register' %}">ثبت‌نام</a>
+                </p>
+<br>
+                <a href="{% url 'password_reset_form' %}">بازیابی رمز عبور</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- left side demo -->
+<div class="left-side">
+<dotlottie-player
+    src="{% static 'animations/Turtle.lottie' %}"
+    background="transparent"
+    speed="0.8"
+    loop
+    autoplay
+    style="width: 500px; height: 500px;">
+</dotlottie-player>
+</div>
+</div>
+
+<style>
+/* =========================
+   BASE
+========================= */
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+    align-items: center;
+    color: beige;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* RIGHT SIDE */
+.right-side {
+    border: 1px solid #000;
+    border-radius: 25px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.right-side h2 {
+    border-bottom: 2px solid gray;
+    padding-bottom: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* FORM */
+.auth-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    box-sizing: border-box;
+}
+
+/* BUTTON */
+.btn-primary {
+    width: 100%;
+    background: #329115bf;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+.btn-primary:hover {
+    background: #40f608a8;
+}
+
+/* FOOTER */
+.auth-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.auth-footer a {
+    color: rgba(41, 182, 247, 0.9);
+}
+
+/* LEFT SIDE */
+.left-side {
+    display: none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 767px) {
+
+    .container {
+        padding: 15px;
+        gap: 20px;
+        min-height: calc(100vh - 20px);
+    }
+
+    .right-side {
+        padding: 20px 16px;
+        border-radius: 20px;
+    }
+
+    .right-side h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group input {
+        padding: 11px 10px;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        padding: 11px;
+    }
+
+    .auth-footer {
+        font-size: 14px;
+    }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 480px) {
+
+    .container {
+        padding: 10px;
+    }
+
+    .right-side {
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
+
+    .right-side h2 {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .form-group input {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .auth-footer {
+        font-size: 13px;
+    }
+}
+
+/* =========================
+   TABLET + DESKTOP
+========================= */
+
+@media (min-width: 768px) {
+
+    .container {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 40px;
+    }
+
+    .left-side {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .left-side dotlottie-player {
+        width: min(500px, 100%) !important;
+        height: auto !important;
+        max-width: 500px;
+        aspect-ratio: 1 / 1;
+    }
+
+    .right-side {
+        padding: 30px;
+    }
+}
+
+/* =========================
+   LARGE SCREENS
+========================= */
+
+@media (min-width: 1024px) {
+
+    .container {
+        padding: 10px 30px;
+    }
+
+    .left-side dotlottie-player {
+        width: 500px !important;
+        height: 500px !important;
+    }
+}
+
+/* =========================
+   VERY LARGE SCREENS
+========================= */
+
+@media (min-width: 1440px) {
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+</style>
+
+{% endblock %}

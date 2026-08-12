@@ -1,0 +1,453 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}ایجاد پست جدید | پروگرامر هاب{% endblock %}
+
+{% block content %}
+
+<div class="auth-container">
+        
+        <div class="terminal-body">
+            <div class="title"><i class="fas fa-sign-in-alt"></i> ایجاد پست جدید</div>
+            
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label><i class="fas fa-heading"></i>  عنوان پست:
+                    </label>
+                    <input type="text" name="title" class="w-full px-4 py-2 bg-black border border-hacker-green text-hacker-green rounded focus:outline-none focus:ring-2 focus:ring-hacker-green focus:ring-opacity-50" placeholder="مثال: ساخت فروشگاه آنلاین با Django" required>
+                 </div>
+                
+                <div class="form-group">
+                    <label>          <i class="fas fa-align-left"></i> توضیحات
+                    </label>
+                    <textarea name="description" rows="6" class="" placeholder="توضیحات کامل پروژه، اهداف، و نیازمندی‌ها..." required></textarea>
+                    
+                     <small class="text-gray-500 text-xs block mt-1">توضیحات کامل و دقیق بنویسید تا همکاران بهتر متوجه شوند</small>
+                
+</div>
+                <div class="form-group">
+                    <label><i class="fas fa-user-check"></i> مهارت‌های من:
+                    </label>
+                     <div class="info">
+                        {{form.my_skills}}
+                   
+                   </div>
+             </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-search"></i> مهارت‌های مورد نیاز:</label>
+                     <div class="info">
+                        {{form.skills_needed}}
+       </div>
+                    <small class="text-gray-500 text-xs block mt-1">چه مهارت‌هایی از همکاران نیاز دارید؟</small>
+                                </div>
+
+                  <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> شهر:</label>
+          <div class="info">
+          {{form.city}}
+            </div>
+</div>
+            <div class="form-group">
+                    <label><i class="fas fa-bullseye"></i> هدف از همکاری:</label>
+                     <div class="info">
+          {{form.purpose}}
+            </div></div>
+
+            
+<div class="btns">
+                <button type="submit" class="btn-publish">
+                    <i class="fas fa-paper-plane ml-2"></i> انتشار پست
+                </button>
+                <a href="{% url 'home' %}" class=" btn-quit">
+                    <i class="fas fa-times ml-2"></i> انصراف
+                </a></div>
+            </form>
+        
+    </div>
+
+    <!-- left side -->
+   <div class="left-side">
+<dotlottie-player
+    src="{% static 'animations/Dirigible.lottie' %}"
+    background="transparent"
+    speed="0.5"
+    loop
+    autoplay
+    style="width: 500px; height: 500px;">
+</dotlottie-player>
+</div>
+
+
+</div>
+
+<style>
+
+.auth-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    gap: 40px;
+
+    width: min(1200px, 95%);
+    margin: 40px auto;
+    padding: 20px;
+
+    align-items: center;
+
+    box-sizing: border-box;
+
+    color: bisque;
+}
+
+
+
+.terminal-body {
+    background: #000000b7;
+
+    border-radius: 8px;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    color: #000000;
+
+    padding: 30px;
+}
+
+
+
+.title {
+    color: rgb(182, 114, 182);
+
+    font-size: 18px;
+    font-weight: 500;
+
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+
+    border-bottom: 2px solid rgb(217, 173, 217);
+}
+
+
+
+.form-group {
+    margin: 20px auto;
+
+    color: #000000;
+
+    width: 100%;
+}
+
+
+.auth-form label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: rgb(217, 173, 217);
+}
+
+
+
+.info,
+input,
+textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(177, 31, 177, 0.755);
+
+    border-radius: 8px;
+
+    padding: 10px;
+
+    background: #33073c2d;
+
+    color: rgb(190, 83, 225);
+
+    font-size: 15px;
+}
+
+
+textarea {
+    resize: vertical;
+
+    min-height: 140px;
+}
+
+
+::placeholder {
+    color: gray;
+}
+
+
+.info select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background: transparent;
+
+    border: none;
+
+    outline: none;
+
+    color: rgb(190, 83, 225);
+
+    font-size: 15px;
+}
+
+
+.form-group small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #888;
+}
+
+.btns {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 40px;
+}
+
+
+
+.btn-publish,
+.btn-quit {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    padding: 16px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease-in-out;
+
+    border: none;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+}
+
+
+
+.btn-publish {
+    background: #4ac24ab4;
+}
+
+
+
+.btn-quit {
+    background: #c24a4ab4;
+}
+
+.btn-publish:hover,
+.btn-quit:hover {
+    transform: scale(1.05);
+}
+
+
+
+.left-side {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+.left-side dotlottie-player {
+
+    width: min(500px, 100%) !important;
+
+    height: auto !important;
+
+    aspect-ratio: 1 / 1;
+
+}
+
+
+@media (max-width: 1024px) {
+
+    .auth-container {
+
+        grid-template-columns: 1fr;
+
+        width: min(750px, 95%);
+
+        padding: 15px;
+
+    }
+
+
+    .left-side {
+
+        display: none;
+
+    }
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    .auth-container {
+
+        width: 100%;
+
+        padding: 10px;
+
+        margin: 20px auto;
+
+    }
+
+
+    .terminal-body {
+
+        padding: 20px 15px;
+
+    }
+
+
+    .title {
+
+        font-size: 17px;
+
+        padding-bottom: 15px;
+
+    }
+
+
+    .form-group {
+        margin: 15px auto;
+
+    }
+
+
+    input,
+    textarea,
+    .info {
+
+        font-size: 14px;
+
+    }
+
+
+    textarea {
+
+        min-height: 120px;
+
+    }
+
+
+    .btns {
+
+        flex-direction: column;
+
+        gap: 12px;
+
+    }
+
+
+    .btn-publish,
+    .btn-quit {
+
+        width: 100%;
+
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .auth-container {
+
+        padding: 5px;
+
+        margin: 15px auto;
+
+    }
+
+
+    .terminal-body {
+
+        padding: 18px 12px;
+
+    }
+
+
+    .title {
+
+        font-size: 16px;
+
+    }
+
+
+    .auth-form label {
+
+        font-size: 14px;
+
+    }
+
+
+    input,
+    textarea,
+    .info {
+
+        padding: 9px;
+
+        font-size: 13px;
+
+    }
+
+
+    .btn-publish,
+    .btn-quit {
+
+        padding: 13px;
+
+        font-size: 14px;
+
+    }
+
+}
+
+</style>
+
+
+
+{% endblock %}

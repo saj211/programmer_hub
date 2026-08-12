@@ -1,0 +1,181 @@
+<!-- core/templates/core/register.html -->
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}ثبت‌نام | پروگرامر هاب{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- right side: login form -->
+    <div class="right-side">
+        <div class="child">
+            
+            <h2><i class="fas fa-sign-in-alt"></i> ثبت نام </h2>
+            
+            <form method="post" class="reg-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> نام کاربری:</label>
+                    <input type="text" name="username" class="form-control" placeholder="username" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> ایمیل:</label>
+                    <input type="email" name="email" class="form-control" placeholder="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> رمز عبور:</label>
+                   
+                    <input type="password" name="password1" class="form-control" placeholder="••••••••" required>
+                                    <small class="text-gray-500 text-xs block mt-1 font-mono">حداقل ۸ کاراکتر</small>
+
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i>  تکرار رمز عبور:</label>
+                    <input type="password" name="password2" class="form-control" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class=""></i> ثبت نام
+                </button>
+            </form>
+            
+            <div class="reg-footer">
+                <p> قبلا ثبت نام کردی؟ <a href="{% url 'login' %}">ورود</a></p>
+            </div>
+        </div>
+        </div>
+
+   <div class="left-side">
+<dotlottie-player
+    src="{% static 'animations/Walking Pothos.lottie' %}"
+    background="transparent"
+    speed="0.8"
+    loop
+    autoplay
+    style="width: 500px; height: 500px;">
+</dotlottie-player>
+</div>
+        </div>
+
+<style>
+/* =========================
+   BASE (mobile first)
+========================= */
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+    align-items: center;
+    color: beige;
+}
+
+/* RIGHT SIDE */
+.right-side {
+    border: 1px solid #000;
+    border-radius: 25px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    width: 100%;
+}
+
+.right-side h2 {
+    border-bottom: 2px solid gray;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+}
+
+/* BUTTON */
+.btn-primary {
+    width: 100%;
+    background: #329115bf;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #40f608a8;
+}
+
+/* FOOTER */
+.reg-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.reg-footer a {
+    color: rgba(41, 182, 247, 0.9);
+}
+
+/* LEFT SIDE (hidden on mobile) */
+.left-side {
+    display: none;
+}
+
+/* =========================
+   MD AND UP (tablet + desktop)
+========================= */
+
+@media (min-width: 768px) {
+
+    .container {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 60px;
+    }
+
+    .left-side {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+    }
+
+    .right-side {
+        padding: 30px;
+    }
+}
+
+/* =========================
+   LARGE SCREENS
+========================= */
+
+@media (min-width: 1024px) {
+    .container {
+        padding: 100px;
+    }
+}
+</style>
+{% endblock %}
